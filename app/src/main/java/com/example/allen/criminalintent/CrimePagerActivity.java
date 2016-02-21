@@ -1,7 +1,5 @@
 package com.example.allen.criminalintent;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -15,6 +13,8 @@ import java.util.ArrayList;
  *
  * @author: Allen
  * @time: 2016/2/21 17:10
+ *
+ * 该文件用到的Fragment为 android.support.v4.app.Fragment
  */
 public class CrimePagerActivity extends FragmentActivity {
     private ViewPager mViewPager;
