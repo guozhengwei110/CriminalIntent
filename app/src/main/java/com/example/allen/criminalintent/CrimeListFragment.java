@@ -35,11 +35,18 @@ public class CrimeListFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
+    //重新加载产生列表项
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Crime c = (Crime) getListAdapter().getItem(position);
 
-        Intent i = new Intent(getActivity(), CrimeActivity.class);
+        Intent i = new Intent(getActivity(), CrimePagerActivity.class);
         i = i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
         startActivity(i);
     }
