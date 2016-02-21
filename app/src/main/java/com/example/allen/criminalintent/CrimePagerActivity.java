@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * CrimePagerActivity
@@ -40,6 +42,34 @@ public class CrimePagerActivity extends FragmentActivity {
             @Override
             public int getCount() {
                 return mCrimes.size();
+            }
+        });
+
+        //使得显示的是所点击的项目
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
+        }
+
+        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Crime crime = mCrimes.get(position);
+                if (crime.getTitle() != null)
+                    setTitle(crime.getTitle());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
