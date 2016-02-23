@@ -1,7 +1,11 @@
 package com.example.allen.criminalintent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
+import java.util.jar.JarException;
 
 /**
  * Crime
@@ -14,6 +18,12 @@ import java.util.UUID;
  * CriminalIntent的模型层
  */
 public class Crime {
+
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_SOLVED = "solved";
+    private static final String JSON_DATE = "date";
+
     private UUID mId;
     private String mTitle;
     private Date mDate;
@@ -51,6 +61,15 @@ public class Crime {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID, mId.toString());
+        json.put(JSON_TITLE, mTitle);
+        json.put(JSON_SOLVED, mSolved);
+        json.put(JSON_DATE, mDate.toString());
+        return json;
     }
 
     @Override

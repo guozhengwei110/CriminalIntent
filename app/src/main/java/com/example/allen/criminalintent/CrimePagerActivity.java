@@ -59,6 +59,9 @@ public class CrimePagerActivity extends AppCompatActivity {
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Crime crime = mCrimes.get(position);
+                if (crime.getTitle() != null)
+                    setTitle(crime.getTitle());
 
             }
 
