@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * SingleFragmentActivity
@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentActivity;
  * @author: Allen
  * @time: 2016/2/20 18:51
  */
-public abstract class SingleFragmentActivity extends Activity {
+public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();       //定义一个抽象方法
 
     @Override

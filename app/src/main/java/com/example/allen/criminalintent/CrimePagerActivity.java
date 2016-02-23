@@ -1,10 +1,12 @@
 package com.example.allen.criminalintent;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+//import android.support.v4.app.FragmentActivity;不能显示actionbar
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.AppCompatActivity;
+        //可以显示actionbar，而且能够使用getSupportFragmentManager();
 
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.UUID;
  *
  * 该文件用到的Fragment为 android.support.v4.app.Fragment
  */
-public class CrimePagerActivity extends FragmentActivity {
+public class CrimePagerActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ArrayList<Crime> mCrimes;
 
