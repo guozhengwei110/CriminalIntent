@@ -32,8 +32,16 @@ public class CrimeLab {
 
     private CrimeLab(Context appContext) {
         mAppContext = appContext;
-        mCrimes = new ArrayList<Crime>();
         mSerializer = new CriminalIntentJSONSerializer(mAppContext, FILENAME);
+        try {
+            mCrimes = mSerializer.loadCrimes();
+        } catch (Exception e) {
+            mCrimes = new ArrayList<Crime>();
+            Log.d(TAG, "----------Error loading crimes----------- ", e);
+            Toast.makeText(mAppContext, TAG + " Error Error loading crimes",
+                    Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public static CrimeLab get(Context c) {
@@ -61,16 +69,19 @@ public class CrimeLab {
     public boolean saveCrimes() {
         try {
             mSerializer.saveCrimes(mCrimes);
-            Toast.makeText(mAppContext, TAG + " Successed crimes saved", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "crimes saved to file");
+            Toast.makeText(mAppContext, TAG + " Successed crimes saved",
+                    Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "---------Successed crimes saved---------");
             return true;
         } catch (IOException e) {
-            Toast.makeText(mAppContext, TAG + " Error saving crimes for IOException", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Error saving crimes for JSONException");
+            Toast.makeText(mAppContext, TAG + " Error saving crimes for IOException",
+                    Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "--------Error saving crimes for JSONException---------", e);
             return false;
         } catch (JSONException e) {
-            Toast.makeText(mAppContext, TAG + " Error saving crimes for IOException", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Error saving crimes for JSONException");
+            Toast.makeText(mAppContext, TAG + " Error saving crimes for IOException",
+                    Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "---------Error saving crimes for JSONException---------", e);
             return false;
         }
     }

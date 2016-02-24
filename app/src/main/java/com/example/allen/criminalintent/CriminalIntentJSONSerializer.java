@@ -4,8 +4,13 @@ import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -43,5 +48,29 @@ public class CriminalIntentJSONSerializer {
             if (writer != null)
                 writer.close();
         }
+    }
+
+    public ArrayList<Crime> loadCrimes() throws IOException, JSONException {
+        ArrayList<Crime> crimes = new ArrayList<Crime>();
+        BufferedReader reader = null;
+        try {
+            InputStream in = mContext.openFileInput(mFilename);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+
+            while ((line = reader.readLine()) != null)
+                jsonString.append(line);
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+
+            for (int i = 0; i < array.length(); i++)
+                crimes.add(new Crime(array.getJSONObject(i)));
+        } catch (FileNotFoundException e) {
+//            忽略这个，当开始刷新时，它（这个异常）会发生
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return crimes;
     }
 }

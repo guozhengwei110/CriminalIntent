@@ -33,6 +33,14 @@ public class Crime {
         mId = UUID.randomUUID();    //生成唯一的标识
         mDate = new Date();
     }
+    public Crime(JSONObject json) throws JSONException {
+        mId = UUID.fromString(json.getString(JSON_ID));
+        if (json.has(JSON_TITLE)) {
+            mTitle = json.getString(JSON_TITLE);
+        }
+        mSolved = json.getBoolean(JSON_SOLVED);
+        mDate = new Date(json.getString(JSON_DATE));        //书上是json.getLong(JSON_DATE)，结果抛出异常
+    }
 
     public UUID getId() {
         return mId;
