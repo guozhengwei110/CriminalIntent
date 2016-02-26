@@ -23,11 +23,14 @@ public class Crime {
     private static final String JSON_TITLE = "title";
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
+    private static final String JSON_PHOTO = "photo";
+
 
     private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private Photo mPhoto;
 
     public Crime(){
         mId = UUID.randomUUID();    //生成唯一的标识
@@ -40,6 +43,10 @@ public class Crime {
         }
         mSolved = json.getBoolean(JSON_SOLVED);
         mDate = new Date(json.getString(JSON_DATE));        //书上是json.getLong(JSON_DATE)，结果抛出异常
+        if (json.has(JSON_PHOTO)) {
+            mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
+            //先把Photo toJSON()再put()，get()时用Photo(JSONObject json)构造出Photo
+        }
     }
 
     public UUID getId() {
@@ -71,12 +78,24 @@ public class Crime {
         mDate = date;
     }
 
+    public Photo getPhoto() {
+        return mPhoto;
+    }
+
+    public void setPhoto(Photo photo) {
+        mPhoto = photo;
+    }
+
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
         json.put(JSON_TITLE, mTitle);
         json.put(JSON_SOLVED, mSolved);
         json.put(JSON_DATE, mDate.toString());
+        if (mPhoto != null) {
+            json.put(JSON_PHOTO, mPhoto.toJSON());
+            //先把Photo toJSON()再put()，get()时用Photo(JSONObject json)构造出Photo
+        }
         return json;
     }
 

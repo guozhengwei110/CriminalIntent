@@ -163,4 +163,11 @@ public class CrimeListFragment extends ListFragment {
         });
         return v;
     }
+
+    @Override
+    public void onPause() {     //在列表删除Crime后，将删除后的结果及时保存
+        super.onPause();
+        CrimeLab.get(getActivity()).saveCrimes();
+    }
+
 }

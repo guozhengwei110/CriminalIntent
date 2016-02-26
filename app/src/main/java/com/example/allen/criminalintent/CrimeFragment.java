@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.Date;
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
 
     public static final String EXTRA_CRIME_ID = "criminalintent.crime_id";
     private static final String DIALOG_DATE = "date";
@@ -114,6 +116,7 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_imageView);
         return v;
     }
 
@@ -135,9 +138,12 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             mDateButton.setText(mCrime.getDate().toString());
         } else if (requestCode == REQUEST_PHOTO) {
-            String filename = (String) data.getSerializableExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
+            String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
             if (filename != null) {
-                Log.d(TAG, "-----------onActivityResult: filename:-------" + filename);
+                Photo p = new Photo(filename);
+                mCrime.setPhoto(p);
+                Log.d(TAG, "-----------Crime: " +  mCrime.getTitle() + " has a photo-------");
+
             }
         }
     }
