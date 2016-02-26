@@ -1,7 +1,9 @@
 package com.example.allen.criminalintent;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +29,8 @@ import java.util.UUID;
  */
 public class CrimeCameraFragment extends Fragment {
     private static final String TAG = "CrimeCameraFragment";
+    public static final String EXTRA_PHOTO_FILENAME = "criminalintent.photo_filename";
+
     private Camera mCamera;
     private SurfaceView mSurfaceView;
     private View mProgressContainer;
@@ -41,7 +45,7 @@ public class CrimeCameraFragment extends Fragment {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            String filename = UUID.randomUUID().toString() + ".jpg";
+            String filename = UUID.randomUUID().toString() + ".jpg";       //filename 保存的图片的名字
             FileOutputStream os = null;
             boolean success = true;
 
@@ -62,8 +66,14 @@ public class CrimeCameraFragment extends Fragment {
                 }
             }
 
-            if (success)
+            if (success) {
                 Log.i(TAG, "-----------JEPG saved at--------------- " + filename);
+                Intent i = new Intent();
+                i.putExtra(EXTRA_PHOTO_FILENAME, filename);
+                getActivity().setResult(Activity.RESULT_OK, i);
+            } else {
+                getActivity().setResult(Activity.RESULT_CANCELED);
+            }
             getActivity().finish();
         }
     };

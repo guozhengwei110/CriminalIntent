@@ -39,7 +39,10 @@ public class CrimeFragment extends Fragment {
 
     public static final String EXTRA_CRIME_ID = "criminalintent.crime_id";
     private static final String DIALOG_DATE = "date";
+    private static final String TAG = "CrimeFragment";
+
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_PHOTO = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,15 +53,6 @@ public class CrimeFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) return;
-        if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mCrime.setDate(date);
-            mDateButton.setText(mCrime.getDate().toString());
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +110,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
-                startActivity(i);
+                startActivityForResult(i, REQUEST_PHOTO);
             }
         });
 
@@ -132,6 +126,22 @@ public class CrimeFragment extends Fragment {
 
         return fragment;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            mDateButton.setText(mCrime.getDate().toString());
+        } else if (requestCode == REQUEST_PHOTO) {
+            String filename = (String) data.getSerializableExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
+            if (filename != null) {
+                Log.d(TAG, "-----------onActivityResult: filename:-------" + filename);
+            }
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
