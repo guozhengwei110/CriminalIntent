@@ -24,6 +24,7 @@ public class Crime {
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
     private static final String JSON_PHOTO = "photo";
+    private static final String JSON_SUSPECT = "suspect";
 
 
     private UUID mId;
@@ -31,6 +32,7 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
     private Photo mPhoto;
+    private String mSuspect;
 
     public Crime(){
         mId = UUID.randomUUID();    //生成唯一的标识
@@ -46,6 +48,9 @@ public class Crime {
         if (json.has(JSON_PHOTO)) {
             mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
             //先把Photo toJSON()再put()，get()时用Photo(JSONObject json)构造出Photo
+        }
+        if (json.has(mSuspect)) {
+            mSuspect = json.getString(mSuspect);
         }
     }
 
@@ -96,7 +101,17 @@ public class Crime {
             json.put(JSON_PHOTO, mPhoto.toJSON());
             //先把Photo toJSON()再put()，get()时用Photo(JSONObject json)构造出Photo
         }
+        json.put(JSON_SUSPECT, mSuspect);
+
         return json;
+    }
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
     }
 
     @Override
