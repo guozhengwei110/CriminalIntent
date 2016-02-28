@@ -4,6 +4,7 @@ package com.example.allen.criminalintent;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -42,6 +43,7 @@ public class CrimeFragment extends Fragment {
     public static final String EXTRA_CRIME_ID = "criminalintent.crime_id";
     private static final String DIALOG_DATE = "date";
     private static final String TAG = "CrimeFragment";
+    private static final String DIALOG_IMAGE = "image";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_PHOTO = 1;
@@ -117,7 +119,43 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_imageView);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Photo p = mCrime.getPhoto();
+                if (p == null) {
+                    return;
+                }
+                android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+                ImageFragment.newInstance(path).show(fm, DIALOG_IMAGE);
+            }
+        });
+
         return v;
+    }
+
+    private void showPhoto() {
+        Photo p = mCrime.getPhoto();
+        BitmapDrawable b = null;
+        if (p != null) {
+            String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+            b = PictureUtils.getScaledDrawable(getActivity(), path);
+        }
+        mPhotoView.setImageDrawable(b);
+    }
+
+    @Override
+    public void onStart() {     //加载图片
+        super.onStart();
+        showPhoto();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        PictureUtils.cleanImageView(mPhotoView);
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -142,7 +180,8 @@ public class CrimeFragment extends Fragment {
             if (filename != null) {
                 Photo p = new Photo(filename);
                 mCrime.setPhoto(p);
-                Log.d(TAG, "-----------Crime: " +  mCrime.getTitle() + " has a photo-------");
+                Log.d(TAG, "-----------Crime: " + mCrime.getTitle() + " has a photo-------");
+                showPhoto();
 
             }
         }
