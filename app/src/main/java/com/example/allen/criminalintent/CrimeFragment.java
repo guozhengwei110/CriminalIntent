@@ -27,8 +27,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+
+import static android.text.format.DateFormat.getDateFormat;
 
 /**
  * CrimeFragment
@@ -92,7 +95,10 @@ public class CrimeFragment extends Fragment {
         });
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getDate().toString());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Crime.FORMAT);
+        mDateButton.setText(dateFormat.format(mCrime.getDate()));
+//        mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +211,9 @@ public class CrimeFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
-            mDateButton.setText(mCrime.getDate().toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Crime.FORMAT);
+            mDateButton.setText(dateFormat.format(mCrime.getDate()));
+//            mDateButton.setText(mCrime.getDate().toString());
         } else if (requestCode == REQUEST_PHOTO) {
             String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
             if (filename != null) {

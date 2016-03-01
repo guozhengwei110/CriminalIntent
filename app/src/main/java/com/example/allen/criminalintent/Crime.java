@@ -25,6 +25,7 @@ public class Crime {
     private static final String JSON_DATE = "date";
     private static final String JSON_PHOTO = "photo";
     private static final String JSON_SUSPECT = "suspect";
+    public static final String FORMAT = "yyyy-MM-dd HH:mm EEEE";
 
 
     private UUID mId;

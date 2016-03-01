@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.security.cert.CertificateParsingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +81,8 @@ public class CrimeListFragment extends ListFragment {
 
             TextView dateTextView =
                     (TextView) convertView.findViewById(R.id.crime_list_item_dateTextView);
-            dateTextView.setText(c.getDate().toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Crime.FORMAT);
+            dateTextView.setText(dateFormat.format(c.getDate()));
 
             CheckBox solvedCheckBox =
                     (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
